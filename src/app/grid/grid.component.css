@@ -1,0 +1,53 @@
+@font-face {
+    font-family: SimplonBP-Bold;
+    src: url(/assets/fonts/SimplonBP-Bold.ttf);
+}
+
+table{
+	font-size: 14px;
+	text-align: center;
+	font-family: SimplonBP-Medium;
+}
+
+thead{
+	background-color: #04b2d9
+}
+
+th{
+	vertical-align: middle;
+}
+
+td{
+	white-space: nowrap;
+}
+
+img{
+	width:70px;
+	height:100px;
+}
+.fa-chevron-up{
+    color:green;
+
+}
+.icons i{
+    font-size: 25px;
+}
+
+.fa-caret-up{
+    color: green;   
+}
+.fa-caret-down{
+    color: red;
+}
+.tabelaCorPar {
+    border-left-color: #9e27ff;
+    border-radius: 5px;
+}
+
+.tabelaCorImpar {
+    border-left-color: #ff6b00;
+    border-radius: 5px;
+}
+table th {
+	border-left: solid 5px;
+}

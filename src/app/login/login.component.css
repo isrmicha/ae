@@ -1,0 +1,63 @@
+.fullheight{
+	background-color: #7a24cc;
+	margin-left: -15px;
+	margin-right: -15px;
+	height: 100vh;
+	color:#FFFFFF;
+}
+
+input{
+	border-radius: 0px;
+	margin-top: 2px;
+	margin-bottom: 2px;
+}
+
+a, a:hover, a:visited{
+	border-radius: 0px;
+	background-color: rgb(4, 178, 217);
+	border-color: rgb(4, 178, 217);
+	text-align: center;
+	color: #ffffff;
+	font-weight: bold;
+	font-size: 17px;
+	text-decoration: none;
+}
+
+
+
+.destacado{
+	font-weight: bold;
+	font-size: 20px;
+}
+
+.middle{
+	display: inline-block;
+    vertical-align: middle;
+    float: none;
+}
+
+.logo-versatil{
+	background-image: url('/assets/img/logo-versatil.png');
+	background-repeat: no-repeat; 
+	background-position: right bottom;
+}
+/* enable absolute positioning */
+.inner-addon { 
+    position: relative; 
+}
+
+/* style icon */
+.inner-addon .fa {
+  position: absolute;
+  padding: 10px;
+  pointer-events: none;
+  color: black;
+}
+
+/* align icon */
+.left-addon .fa  { left:  0px;}
+.right-addon .fa { right: 0px;}
+
+/* add padding  */
+.left-addon input  { padding-left:  30px; }
+.right-addon input { padding-right: 30px; }

@@ -1,0 +1,37 @@
+<div class='row' *ngIf="exibeGrid">
+  <div [ngClass]="{'col-10':exibeFiltroAplicacao, 'col-12':!exibeFiltroAplicacao}">
+    <app-grid></app-grid>
+  </div>
+  <div [ngClass]="{'col-2':exibeFiltroAplicacao, 'hidden':!exibeFiltroAplicacao}">
+    <app-filtro-aplicacoes></app-filtro-aplicacoes>
+  </div>
+</div>
+<div class='row' *ngIf="!exibeGrid">
+  <div class="col-2">
+    <app-destaques></app-destaques>
+  </div>
+  <div [ngClass]="{'col-8':exibeFiltroAplicacao, 'col-10':!exibeFiltroAplicacao}">
+      <app-grafico grupo='Mobilidade'></app-grafico>
+  </div>
+  <div [ngClass]="{'col-2':exibeFiltroAplicacao, 'hidden':!exibeFiltroAplicacao}">
+    <app-filtro-aplicacoes></app-filtro-aplicacoes>
+  </div>
+</div>
+<hr>
+<div class="row" *ngIf="!exibeGrid">
+  <div class="col-6">
+    <app-grafico grupo='Controle'></app-grafico>
+  </div>
+  <div class="col-6">
+    <app-grafico grupo='Pós'></app-grafico>
+  </div>
+</div>
+<br>
+<div class="row" *ngIf="!exibeGrid">
+  <div class="col-6">
+    <app-grafico grupo='OCT'></app-grafico>
+  </div>
+  <div class="col-6">
+    <app-grafico grupo='Oi Total'></app-grafico>
+  </div>
+</div>
