@@ -17,7 +17,7 @@ app.get('*', function(req, res){
 
 setInterval(()=>{
 	request('hhttps://dashboardversatil.herokuapp.com/', function (error, response, body) {
-  console.log('Pingando em '+new Date());
+  console.log('Pingando em ' + new Date());
 });
 },15 * 60 * 1000);
 
