@@ -455,7 +455,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/destaques/destaques.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class = \"destaque {{ classe }}\">\r\n\t<div class=\"destaque-titulo\">{{ titulo }}</div>\r\n\t<div class=\"destaque-porcentagem\">{{ valor | dotReplacer }}</div>\r\n</div>\r\n"
+module.exports = "<div class = \"destaque {{ classe }}\">\r\n\t<div class=\"destaque-titulo\">{{ titulo }}</div>\r\n\t<div class=\"destaque-porcentagem\">{{ valor | dotReplacer }}{{ sufixo }}</div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -481,17 +481,18 @@ var DestaquesComponent = (function () {
     function DestaquesComponent(controleMetasService) {
         this.controleMetasService = controleMetasService;
         this.TIPOS = {
-            'entrantes': { titulo: "ENTRANTES", classe: "entrantes" },
-            'retencao': { titulo: "%RETENÇÃO", classe: "retencao" },
-            'meta': { titulo: "%META", classe: "meta" },
-            'retidas': { titulo: "RETIDAS", classe: "retidas" },
-            'derivadas': { titulo: "DERIVADAS", classe: "derivadas" }
+            'entrantes': { titulo: "ENTRANTES", classe: "entrantes", sufixo: "" },
+            'retencao': { titulo: "%RETENÇÃO", classe: "retencao", sufixo: " %" },
+            'meta': { titulo: "%META", classe: "meta", sufixo: " %" },
+            'retidas': { titulo: "RETIDAS", classe: "retidas", sufixo: "" },
+            'derivadas': { titulo: "DERIVADAS", classe: "derivadas", sufixo: "" }
         };
         this.valor = 0;
     }
     DestaquesComponent.prototype.ngOnInit = function () {
         this.titulo = this.TIPOS[this.tipo].titulo;
         this.classe = this.TIPOS[this.tipo].classe;
+        this.sufixo = this.TIPOS[this.tipo].sufixo;
     };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* Input */])(),
@@ -631,6 +632,19 @@ var GraficoComponent = (function () {
     GraficoComponent.prototype.ngOnInit = function () {
         var canvasGraficoCtx = this.canvasGrafico.nativeElement.getContext('2d');
         __WEBPACK_IMPORTED_MODULE_2_chart_js___default.a.defaults.global.defaultFontFamily = 'SimplonBP-Regular';
+        __WEBPACK_IMPORTED_MODULE_2_chart_js___default.a.plugins.register({
+            beforeDraw: function (chartInstance, easing) {
+                if (chartInstance.config.options.tooltips.onlyShowForDatasetIndex) {
+                    var tooltipsToDisplay = chartInstance.config.options.tooltips.onlyShowForDatasetIndex; // get the plugin configuration
+                    var active = chartInstance.tooltip._active || []; // get the active tooltip (if there is one)
+                    if (active.length > 0) {
+                        if (tooltipsToDisplay.indexOf(active[0]._datasetIndex) === -1) {
+                            chartInstance.tooltip._model.opacity = 0; // we don't want to show this tooltip so set it's opacity back to 0which causes the tooltip draw method to do nothing
+                        }
+                    }
+                }
+            }
+        });
         this.chart = new __WEBPACK_IMPORTED_MODULE_2_chart_js___default.a(canvasGraficoCtx, {
             type: 'bar',
             data: {
@@ -638,7 +652,7 @@ var GraficoComponent = (function () {
                 datasets: [
                     {
                         type: "line",
-                        label: "Retenção ",
+                        label: "Retenção",
                         backgroundColor: "#6D3552",
                         borderColor: "#6D3552",
                         data: this.dados.Retenção,
@@ -657,13 +671,13 @@ var GraficoComponent = (function () {
                         lineTension: 0
                     }, {
                         type: 'bar',
-                        label: 'Entrantes ',
+                        label: 'Entrantes',
                         backgroundColor: '#A22AFF',
                         data: this.dados.Entrantes,
                         yAxisID: 'y-axis-1'
                     }, {
                         type: 'bar',
-                        label: 'Retidas     ',
+                        label: 'Retidas',
                         backgroundColor: '#F67006',
                         data: this.dados.Retidas,
                         yAxisID: 'y-axis-1'
@@ -673,7 +687,26 @@ var GraficoComponent = (function () {
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                tooltips: { mode: 'label' },
+                tooltipEvents: [],
+                showTooltips: true,
+                tooltipCaretSize: 0,
+                // onAnimationComplete: function () {
+                //   this.showTooltip(this.segments, true);
+                // },
+                tooltips: {
+                    mode: 'single',
+                    // new property from our plugin
+                    // configure with an array of datasetIndexes that the tooltip should display for
+                    // to get the datasetIndex, just use it's position in the dataset [] above in the data property
+                    onlyShowForDatasetIndex: [0, 1],
+                    callbacks: {
+                        label: function (tooltipItems, data) {
+                            console.log('tool', tooltipItems);
+                            console.log('data', data);
+                            return tooltipItems.yLabel + ' %';
+                        }
+                    }
+                },
                 elements: {
                     line: { fill: true }
                 },
@@ -772,7 +805,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/grid/grid.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- <div class=\"row\">\r\n  <div class=\"col\"> -->\r\n        <div class=\"row\">\r\n                <div class=\"col-sm-12 col-lg-4 offset-lg-8\">\r\n                    <div class=\"float-right\">\r\n                        <div class=\"card-body\">\r\n                            <span class=\"icons\"><i class=\"{{iconsHtml[0]}}\" aria-hidden=\"true\"></i></span> Meta mínima\r\n                            <span class=\"icons\"><i class=\"{{iconsHtml[1]}}\" aria-hidden=\"true\"></i></span> Meta sonho\r\n                            <span class=\"icons\"><i class=\"{{iconsHtml[2]}}\" aria-hidden=\"true\"></i></span> Abaixo da meta\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n\r\n    <table class=\"table table-hover table-striped table-responsive-sm\">\r\n      <thead class=\"text-white\">\r\n          <tr>\r\n              <th scope=\"col\">PRODUTO</th>\r\n              <th scope=\"col\"></th>\r\n              <th scope=\"col\" *ngFor=\"let mes of traduzMeses\">{{ mes }}</th>\r\n              <th scope=\"col\">{{ anoSelecionado }}</th>\r\n          </tr>\r\n      </thead>\r\n      <tbody *ngFor=\"let aplicacao of tempObject.keys(mockDados); let aplicacaoIndex = index\">\r\n          <tr>\r\n              <th scope=\"row\" rowspan=\"5\" class=\"align-middle\"  [ngClass]=\"aplicacaoIndex%2==0?'tabelaCorPar':'tabelaCorImpar'\">\r\n                  <img src=\"assets/img/{{aplicacoes[aplicacaoIndex]}}.png\" class=\"img-fluid\" style=\"width: 50px; height: 50px;\"><br>{{aplicacao}}\r\n              </th>\r\n          </tr>\r\n          <tr *ngFor=\"let linha of tempObject.keys(mockDados[aplicacao]); let linhaIndex = index\">\r\n              <td  [ngClass]=\"{'celulaTopoPar':linhaIndex == 0 && aplicacaoIndex%2==0, 'celulaTopoImpar':linhaIndex == 0 && aplicacaoIndex%2!=0, 'celulaAbaixoPar':linhaIndex == 3 && aplicacaoIndex%2==0, 'celulaAbaixoImpar':linhaIndex == 3 && aplicacaoIndex%2!=0}\">{{linha}}</td>\r\n              <td *ngFor=\"let coluna of mockDados[aplicacao][linha]; let colunaIndex = index;\" [ngClass]=\"{'celulaTopoPar':linhaIndex == 0 && aplicacaoIndex%2==0, 'celulaTopoImpar':linhaIndex == 0 && aplicacaoIndex%2!=0, 'celulaAbaixoPar':linhaIndex == 3 && aplicacaoIndex%2==0, 'celulaAbaixoImpar':linhaIndex == 3 && aplicacaoIndex%2!=0}\">{{ coluna | dotReplacer }}{{linhaIndex>1?'%':''}}\r\n                  <span *ngIf=\"linhaIndex==2 && mockDados[aplicacao]['Meta'][colunaIndex]>coluna\">\r\n                      <i class=\"{{iconsHtml[2]}}\" aria-hidden=\"true\"></i>\r\n                  </span>\r\n                  <span *ngIf=\"linhaIndex==2 && mockDados[aplicacao]['Meta'][colunaIndex]<=coluna\">\r\n                      <i class=\"{{iconsHtml[0]}}\" aria-hidden=\"true\"></i>\r\n                  </span>\r\n                  <!-- <span *ngIf=\"linhaIndex==2 && (mockDados[aplicacao]['Meta'][colunaIndex]*1.5)<=coluna\">\r\n                      <i class=\"{{iconsHtml[1]}}\" aria-hidden=\"true\"></i>\r\n                  </span> -->\r\n              </td>\r\n          </tr>\r\n      </tbody>\r\n  </table>\r\n<!-- </div>\r\n</div> -->"
+module.exports = "<!-- <div class=\"row\">\r\n  <div class=\"col\"> -->\r\n        <div class=\"row\">\r\n                <div class=\"col-sm-12 col-lg-4 offset-lg-8\">\r\n                    <div class=\"float-right\">\r\n                        <div class=\"card-body\">\r\n                            <span class=\"icons\"><i class=\"{{iconsHtml[0]}}\" aria-hidden=\"true\"></i></span> Meta mínima\r\n                            <span class=\"icons\"><i class=\"{{iconsHtml[1]}}\" aria-hidden=\"true\"></i></span> Meta sonho\r\n                            <span class=\"icons\"><i class=\"{{iconsHtml[2]}}\" aria-hidden=\"true\"></i></span> Abaixo da meta\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n\r\n    <table class=\"table table-hover table-striped table-responsive-sm\">\r\n      <thead class=\"text-white\">\r\n          <tr>\r\n              <th scope=\"col\">PRODUTO</th>\r\n              <th scope=\"col\"></th>\r\n              <th scope=\"col\" *ngFor=\"let mes of traduzMeses\">{{ mes }}</th>\r\n              <th scope=\"col\">{{ anoSelecionado }}</th>\r\n          </tr>\r\n      </thead>\r\n      <tbody *ngFor=\"let aplicacao of tempObject.keys(mockDados); let aplicacaoIndex = index\">\r\n          <tr>\r\n              <th scope=\"row\" rowspan=\"5\" class=\"align-middle\"  [ngClass]=\"aplicacaoIndex%2==0?'tabelaCorPar':'tabelaCorImpar'\">\r\n                  <img src=\"assets/img/{{aplicacoes[aplicacaoIndex]}}.png\" class=\"img-fluid\" style=\"width: 50px; height: 50px;\"><br>{{aplicacao}}\r\n              </th>\r\n          </tr>\r\n          <tr *ngFor=\"let linha of tempObject.keys(mockDados[aplicacao]); let linhaIndex = index\">\r\n              <td  [ngClass]=\"{'celulaTopoPar':linhaIndex == 0 && aplicacaoIndex%2==0, 'celulaTopoImpar':linhaIndex == 0 && aplicacaoIndex%2!=0, 'celulaAbaixoPar':linhaIndex == 3 && aplicacaoIndex%2==0, 'celulaAbaixoImpar':linhaIndex == 3 && aplicacaoIndex%2!=0}\">{{linha}}</td>\r\n              <td *ngFor=\"let coluna of mockDados[aplicacao][linha]; let colunaIndex = index;\" [ngClass]=\"{'celulaTopoPar':linhaIndex == 0 && aplicacaoIndex%2==0, 'celulaTopoImpar':linhaIndex == 0 && aplicacaoIndex%2!=0, 'celulaAbaixoPar':linhaIndex == 3 && aplicacaoIndex%2==0, 'celulaAbaixoImpar':linhaIndex == 3 && aplicacaoIndex%2!=0}\">{{ coluna.toFixed(2) | dotReplacer }}{{linhaIndex>1?'%':''}}\r\n                  <span *ngIf=\"linhaIndex==2 && mockDados[aplicacao]['Meta'][colunaIndex]>coluna\">\r\n                      <i class=\"{{iconsHtml[2]}}\" aria-hidden=\"true\"></i>\r\n                  </span>\r\n                  <span *ngIf=\"linhaIndex==2 && mockDados[aplicacao]['Meta'][colunaIndex]<=coluna\">\r\n                      <i class=\"{{iconsHtml[0]}}\" aria-hidden=\"true\"></i>\r\n                  </span>\r\n                  <!-- <span *ngIf=\"linhaIndex==2 && (mockDados[aplicacao]['Meta'][colunaIndex]*1.5)<=coluna\">\r\n                      <i class=\"{{iconsHtml[1]}}\" aria-hidden=\"true\"></i>\r\n                  </span> -->\r\n              </td>\r\n          </tr>\r\n      </tbody>\r\n  </table>\r\n<!-- </div>\r\n</div> -->"
 
 /***/ }),
 
@@ -1082,19 +1115,19 @@ var ControleMetasService = (function () {
             for (var i = 0; i < 12; i++) {
                 tempMockDadosRaw[aplicacao]['Retidas'][i] = tempMockDadosRaw[aplicacao]['QtdFinalizadas'][i] + tempMockDadosRaw[aplicacao]['QtdAbandonadas'][i];
                 tempMockDadosRaw[aplicacao]['Entrantes'][i] = tempMockDadosRaw[aplicacao]['Retidas'][i] + tempMockDadosRaw[aplicacao]['QtdDerivadas'][i];
-                tempMockDadosRaw[aplicacao]['Retenção'][i] = Math.floor((tempMockDadosRaw[aplicacao]['Retidas'][i] / tempMockDadosRaw[aplicacao]['Entrantes'][i]) * 100);
-                tempMockDadosRaw[aplicacao]['Meta'][i] = Math.floor(Math.random() * ((0.1 * tempMockDadosRaw[aplicacao]['Retenção'][i]) * (Math.random() < 0.5 ? -1 : 1)) + tempMockDadosRaw[aplicacao]['Retenção'][i]);
+                tempMockDadosRaw[aplicacao]['Retenção'][i] = (tempMockDadosRaw[aplicacao]['Retidas'][i] / tempMockDadosRaw[aplicacao]['Entrantes'][i]) * 100;
+                tempMockDadosRaw[aplicacao]['Meta'][i] = Math.random() * ((0.1 * tempMockDadosRaw[aplicacao]['Retenção'][i]) * (Math.random() < 0.5 ? -1 : 1)) + tempMockDadosRaw[aplicacao]['Retenção'][i];
                 tempMockDadosRaw[aplicacao]['Derivadas'][i] = tempMockDadosRaw[aplicacao]['QtdDerivadas'][i];
             }
             for (var i = 0; i < 12; i++) {
                 tempMockDadosRaw[aplicacao]['Retidas'][12] += tempMockDadosRaw[aplicacao]['QtdFinalizadas'][i] + tempMockDadosRaw[aplicacao]['QtdAbandonadas'][i];
                 tempMockDadosRaw[aplicacao]['Entrantes'][12] += tempMockDadosRaw[aplicacao]['Retidas'][i] + tempMockDadosRaw[aplicacao]['QtdDerivadas'][i];
-                tempMockDadosRaw[aplicacao]['Retenção'][12] += Math.floor((tempMockDadosRaw[aplicacao]['Retidas'][i] / tempMockDadosRaw[aplicacao]['Entrantes'][i]) * 100);
-                tempMockDadosRaw[aplicacao]['Meta'][12] += Math.floor(Math.random() * ((0.1 * tempMockDadosRaw[aplicacao]['Retenção'][i]) * (Math.random() < 0.5 ? -1 : 1)) + tempMockDadosRaw[aplicacao]['Retenção'][i]);
+                tempMockDadosRaw[aplicacao]['Retenção'][12] += (tempMockDadosRaw[aplicacao]['Retidas'][i] / tempMockDadosRaw[aplicacao]['Entrantes'][i]) * 100;
+                tempMockDadosRaw[aplicacao]['Meta'][12] += Math.random() * ((0.1 * tempMockDadosRaw[aplicacao]['Retenção'][i]) * (Math.random() < 0.5 ? -1 : 1)) + tempMockDadosRaw[aplicacao]['Retenção'][i];
                 tempMockDadosRaw[aplicacao]['Derivadas'][12] += tempMockDadosRaw[aplicacao]['QtdDerivadas'][i];
             }
-            tempMockDadosRaw[aplicacao]['Retenção'][12] = Math.round(tempMockDadosRaw[aplicacao]['Retenção'][12] / 12);
-            tempMockDadosRaw[aplicacao]['Meta'][12] = Math.round(tempMockDadosRaw[aplicacao]['Meta'][12] / 12);
+            tempMockDadosRaw[aplicacao]['Retenção'][12] = tempMockDadosRaw[aplicacao]['Retenção'][12] / 12;
+            tempMockDadosRaw[aplicacao]['Meta'][12] = tempMockDadosRaw[aplicacao]['Meta'][12] / 12;
             delete tempMockDadosRaw[aplicacao]['QtdFinalizadas'];
             delete tempMockDadosRaw[aplicacao]['QtdAbandonadas'];
             delete tempMockDadosRaw[aplicacao]['QtdDerivadas'];

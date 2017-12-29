@@ -20,5 +20,12 @@
 </head>
 <body>
   <app-root></app-root>
+  <script type="text/javascript">
+  //pog para o chrome funcionar direito
+  window.addEventListener("orientationchange", function() {
+    console.log("mudou");
+    document.body.style.width = window.innerWidth;
+  });
+  </script>
 <script type="text/javascript" src="inline.bundle.js"></script><script type="text/javascript" src="polyfills.bundle.js"></script><script type="text/javascript" src="styles.bundle.js"></script><script type="text/javascript" src="scripts.bundle.js"></script><script type="text/javascript" src="vendor.bundle.js"></script><script type="text/javascript" src="main.bundle.js"></script></body>
 </html>
