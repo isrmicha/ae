@@ -32149,7 +32149,7 @@ export class ControleMetasService {
     for(let aplicacao in tempMockDadosRaw){
       objDadosPorMes[aplicacao] = {QtdAbandonadas : [0,0,0,0,0,0,0,0,0,0,0,0], QtdDerivadas : [0,0,0,0,0,0,0,0,0,0,0,0], QtdFinalizadas : [0,0,0,0,0,0,0,0,0,0,0,0] };
       for(let i = 0 ; i<12 ; i++){
-        tempMockDadosRaw[aplicacao].filter(linha=>new Date(linha.Dat_Referencia).getMonth()+1==i+1).forEach(linhaMes => {
+        tempMockDadosRaw[aplicacao].filter(linha=>new Date(linha.Dat_Referencia.replace('','T')).getMonth()+1==i+1).forEach(linhaMes => {
           objDadosPorMes[aplicacao]['QtdAbandonadas'][i]+= parseInt(linhaMes.QtdAbandonadas);
           objDadosPorMes[aplicacao]['QtdDerivadas'][i]+= parseInt(linhaMes.QtdDerivadas);
           objDadosPorMes[aplicacao]['QtdFinalizadas'][i]+= parseInt(linhaMes.QtdFinalizadas);
