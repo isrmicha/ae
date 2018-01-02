@@ -21,5 +21,5 @@ setInterval(()=>{
 });
 },15 * 60 * 1000);
 
-app.listen(process.env.PORT || 8080);
-console.log(`Server rodando em ${process.env.PORT || 8080}`);
+app.listen(process.env.PORT || 80);
+console.log(`Server rodando em ${process.env.PORT || 80}`);
