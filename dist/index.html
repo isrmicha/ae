@@ -1,31 +1,21 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>Dashboard</title>
-  <base href="/">
-
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-
-  <!-- font awesome -->
-  <link rel="stylesheet" type="text/css" href="assets/lib/font-awesome-4.7.0/css/font-awesome.min.css">
-
-  <!-- Bootstrap -->
-  <!-- <script type="text/javascript" src="assets/lib/bootstrap/bootstrap.min.js"></script>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Dashboard</title><base href="/"><meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no"><link rel="icon" type="image/x-icon" href="favicon.ico"><!-- font awesome --><link rel="stylesheet" type="text/css" href="assets/lib/font-awesome-4.7.0/css/font-awesome.min.css"><!-- Bootstrap --><!-- <script type="text/javascript" src="assets/lib/bootstrap/bootstrap.min.js"></script>
   <link rel="stylesheet" type="text/css" href="assets/lib/bootstrap/bootstrap.min.css">
-  <script type="text/javascript" src="assets/lib/bootstrap/popper.min.js"></script> -->
-
-  
-</head>
-<body>
-  <app-root></app-root>
-  <script type="text/javascript">
-  //pog para o chrome funcionar direito
+  <script type="text/javascript" src="assets/lib/bootstrap/popper.min.js"></script> --><link href="styles.83a141f39fcfde06876a.bundle.css" rel="stylesheet"/></head><body><app-root></app-root><script type="text/javascript">//pog para o chrome funcionar direito: https://stackoverflow.com/questions/12452349/mobile-viewport-height-after-orientation-change
   window.addEventListener("orientationchange", function() {
-    console.log("mudou");
-    document.body.style.width = window.innerWidth;
+    orientationChanged().then(function() {
+      $("body").width(window.innerWidth);
+    });
   });
-  </script>
-<script type="text/javascript" src="inline.bundle.js"></script><script type="text/javascript" src="polyfills.bundle.js"></script><script type="text/javascript" src="styles.bundle.js"></script><script type="text/javascript" src="scripts.bundle.js"></script><script type="text/javascript" src="vendor.bundle.js"></script><script type="text/javascript" src="main.bundle.js"></script></body>
-</html>
+
+  // Wait until innerheight changes, for max 120 frames
+  function orientationChanged() {
+    const timeout = 120;
+    return new window.Promise(function(resolve) {
+      const go = (i, height0) => {
+        window.innerHeight != height0 || i >= timeout ?
+          resolve() :
+          window.requestAnimationFrame(() => go(i + 1, height0));
+      };
+      go(0, window.innerHeight);
+    });
+  }</script><script type="text/javascript" src="inline.155a63103a32282ec61e.bundle.js"></script><script type="text/javascript" src="polyfills.fca27ddf9647d9c26040.bundle.js"></script><script type="text/javascript" src="scripts.ba19348dd6634ae18c82.bundle.js"></script><script type="text/javascript" src="main.2b4ea328cdb513593ee2.bundle.js"></script></body></html>
