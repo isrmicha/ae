@@ -2,6 +2,8 @@
 const express = require('express');
 const app = express();
 var request = require('request');
+var compression = require('compression');
+app.use(compression());
 app.engine('html', require('ejs').renderFile);
 // Run the app by serving the static files
 // in the dist directory
@@ -21,5 +23,5 @@ setInterval(()=>{
 });
 },15 * 60 * 1000);
 
-app.listen(process.env.PORT || 8080);
-console.log(`Server rodando em ${process.env.PORT || 8080}`);
+app.listen(process.env.PORT || 80);
+console.log(`Server rodando em ${process.env.PORT || 80}`);
