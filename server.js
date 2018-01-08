@@ -1,7 +1,13 @@
 // server.js
 const express = require('express');
+var compression = require('compression');
 const app = express();
+app.use(compression());
 var request = require('request');
+
+
+
+
 app.engine('html', require('ejs').renderFile);
 // Run the app by serving the static files
 // in the dist directory
