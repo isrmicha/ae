@@ -1,4 +1,4 @@
-div:-moz-full-screen{width:100%;min-height:100%}div:-webkit-full-screen{width:100%;min-height:100%}div:-ms-fullscreen{width:100%;min-height:100%}div:fullscreen{width:100%;min-height:100%}/*!
+canvas:-moz-full-screen{min-width:100%;min-height:100%}canvas:-webkit-full-screen{min-width:100%;min-height:100%}canvas:-ms-fullscreen{min-width:100%;min-height:100%}canvas:fullscreen{min-width:100%;min-height:100%}/*!
  * Bootstrap v4.0.0-beta.2 (https://getbootstrap.com)
  * Copyright 2011-2017 The Bootstrap Authors
  * Copyright 2011-2017 Twitter, Inc.
