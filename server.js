@@ -1,6 +1,8 @@
 // server.js
 const express = require('express');
+var compression = require('compression');
 const app = express();
+app.use(compression());
 var request = require('request');
 var compression = require('compression');
 app.use(compression());
